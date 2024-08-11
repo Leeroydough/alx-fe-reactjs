@@ -9,6 +9,7 @@ const App = () => {
   return (
     <div>
       <Header />
+      <WelcomeMessage />  {/* Include the WelcomeMessage component here */}
       <MainContent />
       <Footer />
     </div>
