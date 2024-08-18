@@ -5,6 +5,7 @@ import MainContent from './MainContent';
 import Footer from './Footer';
 import WelcomeMessage from './components/WelcomeMessage';  // Import the WelcomeMessage component
 import UserProfile from './components/UserProfile'; // Import UserProfile component
+import Counter from './components/Counter';
 
 const App = () => {
   return (
