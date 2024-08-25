@@ -1,6 +1,7 @@
 // src/components/RecipeList.jsx
 
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import { useRecipeStore } from './recipeStore';
 import RecipeCard from './RecipeCard'; // Assuming you have a RecipeCard component
 
@@ -10,7 +11,11 @@ const RecipeList = () => {
   return (
     <div>
       {filteredRecipes.map(recipe => (
-        <RecipeCard key={recipe.id} recipe={recipe} />
+        <div key={recipe.id}>
+          <Link to={`/recipe/${recipe.id}`}>
+            <RecipeCard recipe={recipe} />
+          </Link>
+        </div>
       ))}
     </div>
   );
