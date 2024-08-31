@@ -1,8 +1,24 @@
-const PostsComponent = () => {
-  const { data, error, isLoading, refetch } = useQuery('posts', fetchPosts);
+import React from 'react';
+import { useQuery } from 'react-query';
 
+// Define the fetch function
+const fetchPosts = async () => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  if (!res.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return res.json();
+};
+
+const PostsComponent = () => {
+  // Use the useQuery hook to fetch data
+  const { data, isError, error, isLoading, refetch } = useQuery('posts', fetchPosts);
+
+  // Handle loading state
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading data</div>;
+
+  // Handle error state
+  if (isError) return <div>Error loading data: {error.message}</div>;
 
   return (
     <div>
@@ -16,3 +32,7 @@ const PostsComponent = () => {
     </div>
   );
 };
+
+export default PostsComponent;
+
+
