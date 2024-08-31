@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # Node modules
 node_modules/
 
@@ -23,6 +25,7 @@ Thumbs.db
 # Miscellaneous
 *.suo
 *.ntvs_analysis.dat
+>>>>>>> origin/main
 # Logs
 logs
 *.log

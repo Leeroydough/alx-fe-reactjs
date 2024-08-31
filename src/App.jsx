@@ -1,12 +1,11 @@
-import RecipeList from './components/RecipeList';
-import AddRecipeForm from './components/AddRecipeForm';
+import React from 'react';
+import RegistrationForm from './components/RegistrationForm';
 
 function App() {
   return (
-    <div>
-      <h1>Recipe Sharing Application</h1>
-      <AddRecipeForm />
-      <RecipeList />
+    <div className="App">
+      <h1>User Registration</h1>
+      <RegistrationForm />
     </div>
   );
 }
