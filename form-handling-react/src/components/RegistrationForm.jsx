@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
 
 const RegistrationForm = () => {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!username || !email || !password) {
-      setError('All fields are required');
-      return;
+
+    const newErrors = {};
+
+    // Basic validation logic
+    if (!email) {
+      newErrors.email = 'Email is required';
     }
-    setError('');
-    // Handle form submission logic, e.g., send data to API
-    console.log({ username, email, password });
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+    }
+
+    setErrors(newErrors);
+
+    // If there are no errors, proceed with form submission
+    if (Object.keys(newErrors).length === 0) {
+      // Submit form or make API call here
+      console.log('Form submitted successfully!');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>Username:</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
       <div>
         <label>Email:</label>
         <input
@@ -34,6 +37,7 @@ const RegistrationForm = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
       </div>
       <div>
         <label>Password:</label>
@@ -42,11 +46,12 @@ const RegistrationForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
       </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
       <button type="submit">Register</button>
     </form>
   );
 };
 
 export default RegistrationForm;
+
