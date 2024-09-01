@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Profile from './components/Profile';
 import Login from './components/Login';
+import BlogPost from './components/BlogPost'; // Import the BlogPost component
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -17,6 +18,8 @@ function App() {
             <Profile />
           </ProtectedRoute>
         } />
+        {/* Dynamic Route for Blog Posts */}
+        <Route path="/blog/:id" element={<BlogPost />} />
       </Routes>
     </Router>
   );
