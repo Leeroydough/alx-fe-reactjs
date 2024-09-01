@@ -1,50 +1,36 @@
-// src/components/TodoList.jsx
-import React, { useState } from 'react';
-import AddTodoForm from './AddTodoForm';
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect'; // for better assertions
+import TodoList from '../components/TodoList'; // adjust the path if necessary
 
-const TodoList = () => {
-  const [todos, setTodos] = useState([
-    { id: 1, text: 'Sample Todo 1', completed: false },
-    { id: 2, text: 'Sample Todo 2', completed: false },
-    { id: 3, text: 'Sample Todo 3', completed: false },
-  ]);
+describe('TodoList Component', () => {
+  test('renders the initial todo list', () => {
+    render(<TodoList />);
+    expect(screen.getByText('Learn React')).toBeInTheDocument();
+    expect(screen.getByText('Build a Todo App')).toBeInTheDocument();
+  });
 
-  const addTodo = (text) => {
-    const newTodo = { id: Date.now(), text, completed: false };
-    setTodos([...todos, newTodo]);
-  };
+  test('adds a new todo', () => {
+    render(<TodoList />);
+    fireEvent.change(screen.getByPlaceholderText('Add a new todo'), { target: { value: 'New Todo' } });
+    fireEvent.click(screen.getByText('Add Todo'));
+    expect(screen.getByText('New Todo')).toBeInTheDocument();
+  });
 
-  const toggleTodo = (id) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
-  };
+  test('toggles a todo between completed and not completed', () => {
+    render(<TodoList />);
+    const todoItem = screen.getByText('Learn React');
+    fireEvent.click(todoItem);
+    expect(todoItem).toHaveClass('completed'); // Assuming 'completed' class indicates completed state
+    fireEvent.click(todoItem);
+    expect(todoItem).not.toHaveClass('completed');
+  });
 
-  const deleteTodo = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id));
-  };
+  test('deletes a todo', () => {
+    render(<TodoList />);
+    const deleteButton = screen.getByLabelText('Delete Learn React');
+    fireEvent.click(deleteButton);
+    expect(screen.queryByText('Learn React')).toBeNull();
+  });
+});
 
-  return (
-    <div>
-      <h1>Todo List</h1>
-      <AddTodoForm onAddTodo={addTodo} />
-      <ul>
-        {todos.map(todo => (
-          <li
-            key={todo.id}
-            onClick={() => toggleTodo(todo.id)}
-            className={todo.completed ? 'completed' : ''}
-          >
-            {todo.text}
-            <button onClick={(e) => {
-              e.stopPropagation(); // Prevent click from toggling todo
-              deleteTodo(todo.id);
-            }}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default TodoList;
