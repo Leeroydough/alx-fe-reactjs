@@ -1,4 +1,5 @@
 import React from 'react';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
@@ -7,6 +8,9 @@ function App() {
         <h1 className="text-4xl font-bold text-blue-600 mb-4">Recipe Sharing Platform</h1>
         <p className="text-gray-700">Welcome to your Recipe Sharing Platform. Start adding your favorite recipes now!</p>
       </div>
+         <div className="App">
+      <HomePage />
+    </div>
     </div>
   );
 }
