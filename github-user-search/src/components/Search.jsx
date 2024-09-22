@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 const Search = ({ onSearch, userData, loading, error }) => {
@@ -28,7 +29,7 @@ const Search = ({ onSearch, userData, loading, error }) => {
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>Looks like we can’t find the user</p>}
+      {error && <p>Looks like we can’t find the user</p>} {/* Error message included */}
       {userData && (
         <div className="user-profile">
           <img src={userData.avatar_url} alt={userData.login} className="avatar" />
