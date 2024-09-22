@@ -1,8 +1,31 @@
-# React + Vite
+# GitHub User Search Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a React-based web application that allows users to search for GitHub profiles by username. The application fetches and displays user information from the GitHub API, including their avatar, username, number of repositories, followers, and a link to their GitHub profile.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Search for GitHub users by username.
+- Display user profile details such as:
+  - Avatar
+  - Username
+  - Public repositories count
+  - Followers count
+  - A link to their GitHub profile
+- Responsive design using Tailwind CSS.
+- Axios used for API requests.
+
+## Project Structure
+
+```plaintext
+src/
+├── components/       # Reusable React components
+│   ├── SearchBar.jsx # Component for searching users
+│   ├── UserProfile.jsx # Component for displaying user details
+│   └── UserList.jsx  # Component for listing users
+├── services/         # API services
+│   └── githubService.js  # Axios functions for GitHub API calls
+├── App.jsx           # Main application component
+├── index.jsx         # Application entry point
+├── data.json         # Static JSON for mock data (optional)
+├── index.css         # Global styles
+└── assets/           # Images or other assets (if needed)
