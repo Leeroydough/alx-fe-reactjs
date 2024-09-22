@@ -6,37 +6,39 @@ import UserProfile from './components/UserProfile';
 import Search from './components/Search';
 import { fetchUserData } from './services/githubService';
 
-const App = () => {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const Search = ({ onSearch, userData, loading, error }) => {
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = async (username) => {
-    setLoading(true);
-    setError(null);
-    setUserData(null);  // Reset the previous state
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
-    try {
-      const data = await fetchUserData(username);
-      setUserData(data);  // Update the state with the fetched user data
-    } catch (err) {
-      setError('Looks like we can’t find the user');
-    } finally {
-      setLoading(false);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (searchTerm.trim()) {
+      onSearch(searchTerm);  // Pass the search term back to the parent component
     }
   };
 
   return (
-    <div className="app-container">
-      <h1>GitHub User Search</h1>
-      <Search onSearch={handleSearch} />
+    <div className="search-container">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Search GitHub user"
+          value={searchTerm}
+          onChange={handleInputChange}
+          className="input-field"
+        />
+        <button type="submit" className="search-button">Search</button>
+      </form>
 
-       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {loading && <p>Loading...</p>}
+      {error && <p>Looks like we can’t find the user</p>}
       {userData && (
         <div className="user-profile">
           <img src={userData.avatar_url} alt={userData.login} className="avatar" />
-          <h2>{userData.name}</h2>
+          <h2>{userData.login}</h2>
           <p>
             <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
               View GitHub Profile
@@ -48,4 +50,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Search;
