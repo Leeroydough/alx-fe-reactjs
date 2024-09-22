@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { fetchUserData } from '../services/githubService'; // Import the API service
+import { fetchUserData } from '../services/githubService'; // Ensure this handles advanced search
 
 const Search = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
+  const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -11,17 +13,25 @@ const Search = ({ onSearch }) => {
     setSearchTerm(event.target.value);
   };
 
+  const handleLocationChange = (event) => {
+    setLocation(event.target.value);
+  };
+
+  const handleMinReposChange = (event) => {
+    setMinRepos(event.target.value);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (searchTerm.trim()) {
+    if (searchTerm.trim() || location.trim() || minRepos.trim()) {
       setLoading(true);
-      setError(''); // Clear previous errors
+      setError('');
       try {
-        const data = await fetchUserData(searchTerm); // Fetch user data
+        const data = await fetchUserData(searchTerm, location, minRepos); // Updated to fetch advanced data
         setUserData(data);
         onSearch(searchTerm); // Pass the search term back to the parent
       } catch (err) {
-        setError("Looks like we cant find the user"); // Handle error
+        setError("Looks like we cant find any users");
       } finally {
         setLoading(false);
       }
@@ -30,7 +40,7 @@ const Search = ({ onSearch }) => {
 
   return (
     <div className="search-container">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <input
           type="text"
           placeholder="Search GitHub user"
@@ -38,20 +48,40 @@ const Search = ({ onSearch }) => {
           onChange={handleInputChange}
           className="input-field"
         />
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={handleLocationChange}
+          className="input-field"
+        />
+        <input
+          type="number"
+          placeholder="Minimum Repositories"
+          value={minRepos}
+          onChange={handleMinReposChange}
+          className="input-field"
+        />
         <button type="submit" className="search-button">Search</button>
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>} {/* Display the error message */}
-      {userData && (
+      {error && <p>{error}</p>}
+      {userData.length > 0 && (
         <div className="user-profile">
-          <img src={userData.avatar_url} alt={userData.login} className="avatar" />
-          <h2>{userData.login}</h2>
-          <p>
-            <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-              View GitHub Profile
-            </a>
-          </p>
+          {userData.map(user => (
+            <div key={user.id} className="user-item">
+              <img src={user.avatar_url} alt={user.login} className="avatar" />
+              <h2>{user.login}</h2>
+              <p>Location: {user.location || 'N/A'}</p>
+              <p>Repositories: {user.public_repos || 0}</p>
+              <p>
+                <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+                  View GitHub Profile
+                </a>
+              </p>
+            </div>
+          ))}
         </div>
       )}
     </div>
