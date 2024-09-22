@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Search = ({ onSearch }) => {
+const Search = ({ onSearch, userData, loading, error }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleInputChange = (event) => {
@@ -26,6 +26,20 @@ const Search = ({ onSearch }) => {
         />
         <button type="submit" className="search-button">Search</button>
       </form>
+
+      {loading && <p>Loading...</p>}
+      {error && <p>Looks like we can’t find the user</p>}
+      {userData && (
+        <div className="user-profile">
+          <img src={userData.avatar_url} alt={userData.login} className="avatar" />
+          <h2>{userData.login}</h2>
+          <p>
+            <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
+              View GitHub Profile
+            </a>
+          </p>
+        </div>
+      )}
     </div>
   );
 };
