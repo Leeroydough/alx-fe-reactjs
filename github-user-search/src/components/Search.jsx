@@ -1,17 +1,30 @@
-
 import React, { useState } from 'react';
+import { fetchUserData } from '../services/githubService'; // Import the API service
 
-const Search = ({ onSearch, userData, loading, error }) => {
+const Search = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (searchTerm.trim()) {
-      onSearch(searchTerm);  // Pass the search term back to the parent component
+      setLoading(true);
+      setError(''); // Clear previous errors
+      try {
+        const data = await fetchUserData(searchTerm); // Fetch user data
+        setUserData(data);
+        onSearch(searchTerm); // Pass the search term back to the parent
+      } catch (err) {
+        setError("Looks like we can't find the user"); // Handle error
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -29,7 +42,7 @@ const Search = ({ onSearch, userData, loading, error }) => {
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>Looks like we cant find the user</p>} {/* Error message included */}
+      {error && <p>{error}</p>} {/* Display the error message */}
       {userData && (
         <div className="user-profile">
           <img src={userData.avatar_url} alt={userData.login} className="avatar" />
