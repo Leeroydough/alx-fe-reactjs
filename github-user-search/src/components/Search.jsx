@@ -21,7 +21,7 @@ const Search = ({ onSearch }) => {
         setUserData(data);
         onSearch(searchTerm); // Pass the search term back to the parent
       } catch (err) {
-        setError("Looks like we can't find the user"); // Handle error
+        setError("Looks like we cant find the user"); // Handle error
       } finally {
         setLoading(false);
       }
